@@ -1,0 +1,426 @@
+syntax = "proto2";
+
+package HederaDefinitions;
+
+message FRotator{
+	required int32 Pitch = 1;
+	required int32 Yaw = 2;
+	required int32 Roll = 3;
+}
+
+message FVector{
+	required float X = 1;
+	required float Y = 2;
+	required float Z = 3;
+}
+
+//ReplicateActor should return an int of the new actor id
+message ReplicatedActorReference{
+	required uint32 actorID = 1;
+}
+
+message NonReplicatedObjectReference{
+	required string fullNameLookup = 1;
+}
+
+message FName{
+	required int32 FNameEntryId = 1;
+	required int32 InstanceNumber = 2;
+}
+
+message FEnvironmentalEffectInfo{
+	required int32 EffectID = 1;
+	required float AuxBusVolume = 2;
+	required float OutputBusVolume = 3;
+}
+
+message FAttributeDefinitionDefault{
+	required NonReplicatedObjectReference Attribute = 1; 
+	required float DefaultValue = 2;
+}
+
+message FAttributeScalarParam{
+	required FName ParamName = 1;                      
+	required bool bVectorParam = 2;                    
+	required bool bClampInput = 3;                     
+	required FAttributeDefinitionDefault Input = 4;       
+	required FAttributeDefinitionDefault MinInput = 5;    
+	required FAttributeDefinitionDefault MaxInput = 6;    
+	required FAttributeDefinitionDefault MinOutput = 7;   
+	required FAttributeDefinitionDefault MaxOutput = 8;   
+	required int32 ScalarParamOperand = 9; 
+	required float CurrentValue = 10;                           
+}
+
+message FScreenParticleModifier{
+	repeated FAttributeScalarParam ScalarParams = 1;
+	required float CachedValue = 2;
+}
+
+message FInteractionIconWithOverrides{
+	required NonReplicatedObjectReference IconDef = 1;              
+	required NonReplicatedObjectReference OverrideIconDef = 2;           
+	required bool bOverrideIcon = 3;  
+	required bool bOverrideAction = 4;
+	required bool bOverrideText = 5; 
+	required bool bCostsToUse = 6;              
+	required int32 CostsCurrencyType = 7;           
+	required int32 CostsAmount = 8;           
+}
+
+message FVector2D{
+	required float X = 1;
+	required float Y = 2;
+}
+
+message FScreenParticleScalarParamOverTime {
+	required FName ParameterName = 1;
+	required float TotalTime = 2;    
+	required float StartValue = 3;   
+	required float EndValue = 4;     
+	required float LastValue = 5;    
+};
+
+message FScreenParticleVectorParamOverTime {
+	required FName ParameterName = 1;
+	required float TotalTime = 2;    
+	required FVector VectorStartValue = 3;   
+	required FVector VectorEndValue = 4;     
+	required FVector LastValue = 5;    
+};
+
+message FScreenParticleParamOverTime{
+	repeated FScreenParticleScalarParamOverTime ScalarParams = 1;
+	repeated FScreenParticleVectorParamOverTime VectorParams = 2;
+};
+
+message FScreenParticleInitParams{
+	required NonReplicatedObjectReference Template = 1;                           
+	repeated FScreenParticleModifier ScreenParticleModifiers = 2;            
+	required NonReplicatedObjectReference TemplateScreenParticleMaterial = 3;     
+	required FName MatParamName = 4;                       
+	required bool bHideWhenFinished = 5;              
+	required FName ParticleTag = 6;                        
+	required FVector2D ContentDims = 7;                        
+	required float ParticleDepth = 8;                      
+	required int32 ScalingMode = 9;                        
+	required FScreenParticleParamOverTime StopParamsOT = 10;                       
+	required bool bOnlyOwnerSee = 11;                  
+	required int32   EffectDepthPriorityGroup = 12;           
+	required bool bAlwaysVisible = 13;                 
+	required bool bUseDesignerAttributeParameters = 14;
+}
+
+message FReplicatedDamageScreenParticle{
+	required FScreenParticleInitParams Params = 1;
+	required FVector ReferenceLoaction = 2;
+	required float GenericScale = 3;
+	required int32 Counter = 4;
+}
+
+message FReplicatedProgressBarData{
+	required float Duration = 1;
+	required float Rate = 2;
+	required float StartOffset = 3;
+}
+
+message FCameraViewData{
+	required ReplicatedActorReference ViewTarget = 1;
+	required FName ModeName = 2;
+	required float BlendTimeOverride = 3;
+	required bool bIsTeleport = 4;
+	required int32 DesiredDeathSpectatorState = 5;
+}
+
+message FActorSelectionDataContainer{
+	required float Health = 1;
+	required bool bDisplayHealth = 2;
+	required float Shield = 3;
+	required bool bDisplayShield = 4;
+	required float Overshield = 5;
+	required bool bDisplayOvershield = 6;
+	required int32 Level = 7;
+	required bool bDisplayLevel = 8;
+	required float RespawnTime = 9;
+	required bool bDisplayRespawnTime = 10;
+	required bool bDisplayName = 11;
+	required FVector Location = 12;
+	required bool bActive = 13;
+	required NonReplicatedObjectReference UnitType = 14;
+	required ReplicatedActorReference PRI = 15;
+	required bool bInjured = 16;
+	required NonReplicatedObjectReference NameID = 17;
+	required bytes Name = 18;
+}
+
+message APoplarPlayerController{
+	required FVector Location = 1;
+	required FRotator Rotation = 2;
+	required float DrawScale = 3;
+	required float CustomTimeDilation = 4;
+	required uint32 Physics = 5;
+	required uint32 RemoteRole = 6;
+	required uint32 Role = 7;
+	required uint32 ReplicatedCollisionType = 8;
+	required ReplicatedActorReference Owner = 9;
+	required ReplicatedActorReference Base = 10;
+	required bool bHidden = 11;
+	required bool bTearOff = 12;
+	required bool bHardAttach = 13;
+	required bool bCollideActors = 14;
+	required bool bCollideWorld = 15;
+	required bool bBlockActors = 16;
+	required bool bProjTarget = 17;
+	required bool bNetOwner = 18;
+	required ReplicatedActorReference Instigator = 19;
+	required FVector Velocity = 20;
+	required FName BaseBoneName = 21;
+	required FVector RelativeLocation = 22;
+	required FRotator RelativeRotation = 23;
+	required ReplicatedActorReference Pawn = 24;
+	required ReplicatedActorReference ClientPendingPSI = 25;
+	required ReplicatedActorReference ClientPendingPRI = 26;
+	required FRotator TargetViewRotation = 27;
+	required float TargetEyeHeight = 28;
+	required FEnvironmentalEffectInfo ActiveAudioEffect = 29;
+	required bool bHideAmmoOnHud = 30;
+	required bool bHideCompassOnHUD = 31;
+	required bool bHideSkillsOnHUD = 32;
+	required bool bHideXPOnHUD = 33;
+	required bool bConsoleController = 34;
+	required bool bDisplayTradeIcon = 35;
+	required bool bDisplayTradeDisabledIcon = 36;
+	required bool bResurrectAll = 37;
+	required bool bPlayingTeleporterSound = 38;
+	required ReplicatedActorReference MyWillowPawn = 39;
+	required NonReplicatedObjectReference CurrentUsableObject_Object = 40;
+	required NonReplicatedObjectReference CurrentUsableObject_Interface = 41;
+	repeated FInteractionIconWithOverrides CurrentInteractionIcon = 42;
+	required FReplicatedDamageScreenParticle RecentDamageScreenParticle = 43;
+	required float FOVModifierSpeed = 44;
+	required float FOVModifierSpeedBaseValue = 45;
+	required float PostProcessDurationMultiplier = 46;
+	required FReplicatedProgressBarData UseProgressBar = 47;
+	required int32 TargetedWarningSeverity = 48;
+	required FCameraViewData ReplicatedCameraViewData = 49;
+	required ReplicatedActorReference PipelineSummaryHistoryManager = 50;
+	repeated FActorSelectionDataContainer MinimapActorSelectData = 51;
+	required int32 CurrentMinimapActorSelectionIndex = 52;
+}
+
+message FUniqueID{
+	repeated int32 RawID = 1;
+	required bool bHasValue = 2;
+}
+
+message FCurrencyState{
+	required int32 Type = 1;
+	required float CurrentAmount = 2;
+	required float LastKnownAmount = 3;
+}
+
+message FResourcePoolReference{
+	required ReplicatedActorReference PoolManager = 1;
+	required int32 PoolIndexInManager = 2;
+	required int32 PoolGUID = 3;
+	required NonReplicatedObjectReference Data = 4;
+}
+
+message FReplicatedNounAttributeState{
+	required FName NounName = 1;
+	required float Value = 2;
+	required bool bOnlyRelevantToOwner = 3;
+}
+
+message FWeaponDefinitionData{
+	required NonReplicatedObjectReference WeaponTypeDefinition = 1;
+}
+
+message FReplicatedStandInGear{
+	required FWeaponDefinitionData Weapon1Data = 1;
+	required FWeaponDefinitionData Weapon2Data = 2;
+}
+
+message FTrackedSkillState{
+	required NonReplicatedObjectReference SkillDef = 1;
+	required int32 PackedStackCountAndPercentComplete = 2;
+}
+
+message FManagedActorCountData{
+	required NonReplicatedObjectReference Type = 1;
+	required int32 Count = 2;
+}
+
+message FReplicatedPerkItem{
+	required string MetaID = 1;
+	required string AssetKey = 2;
+	required bool bCanUse = 3;
+	required int32 ItemLevel = 4;
+	required int32 Rarity = 5;
+	required FUniqueID PlayerID = 6;
+	required string ApolloJSON = 7;
+	required int32 EntitlementIndex = 8;
+	required bool bActive = 9;
+	required NonReplicatedObjectReference PerkFunction = 10;
+	required NonReplicatedObjectReference Wearable = 11;
+}
+
+message FAugInstance{
+	required NonReplicatedObjectReference AugDef = 1;
+	required int32 CurrentTier = 2;
+	required int32 ClientPurchaseStatus = 3;
+	required bool Preselected = 4;
+}
+
+message FAugCategoryInstance{
+	required NonReplicatedObjectReference CategoryDef = 1;
+	repeated FAugInstance Augs = 2;
+	required FAugInstance Mutation = 3;
+	required bool CategoryIsUnlocked = 4;
+}
+
+message FAugSetInstance{
+	required NonReplicatedObjectReference AugSetDef = 1;
+	repeated FAugCategoryInstance AllCategories = 2;
+}
+
+message FReplicatedBehaviorConsumerState{
+	required bool bIsProcessSuspended = 1;
+	required int32 BehaviorSequenceEnabledFlags = 2;
+	required bool bNeedToApplyThisState = 3;
+}
+
+message FReplicatedBehaviorEvent{
+	required int32 SequenceIndex = 1;
+	required int32 EventCounter = 2;
+	required int32 EventIndex = 3;
+	required int32 EventOutput = 4;
+	required NonReplicatedObjectReference Instigator = 5;
+}
+
+message FCinematicModeOptions{
+	required bool    bCinematicMode = 1;              
+	required bool    bHidePlayer = 2;                 
+	required bool    bAffectsHUD = 3;                 
+	required bool    bAffectsMovement = 4;            
+	required bool    bAffectsTurning = 5;             
+	required bool    bAffectsButtons = 6;             
+	required bool    bAffectsGodMode = 7;             
+	required bool    bAffectsNoTarget = 8;            
+	required bool    bAllowCinematicSplitScreen = 9;  
+	required bool    bAffectsAudio = 10;               
+	required bool    bKismetSetCinematicMode = 11;     
+	required bool    bHideOutlines = 12;               
+	required bool    bAffectsSkills = 13;              
+	required bool    bHideScreenParticles = 14;        
+	required int32   ApplicationMode = 15;                 
+	required int32   ModeToken = 16;                       
+}
+
+message APoplarPlayerReplicationInfo{
+	required FVector Location = 1;
+	required FRotator Rotation = 2;
+	required float DrawScale = 3;
+	required float CustomTimeDilation = 4;
+	required uint32 Physics = 5;
+	required uint32 RemoteRole = 6;
+	required uint32 Role = 7;
+	required uint32 ReplicatedCollisionType = 8;
+	required ReplicatedActorReference Owner = 9;
+	required ReplicatedActorReference Base = 10;
+	required bool bHidden = 11;
+	required bool bTearOff = 12;
+	required bool bHardAttach = 13;
+	required bool bCollideActors = 14;
+	required bool bCollideWorld = 15;
+	required bool bBlockActors = 16;
+	required bool bProjTarget = 17;
+	required bool bNetOwner = 18;
+	required ReplicatedActorReference Instigator = 19;
+	required FVector Velocity = 20;
+	required int32 Deaths = 21;
+	required int32 Ping = 22;
+	required string PlayerName = 23;
+	required bool bAdmin = 24;
+	required bool bIsSpectator = 25;
+	required bool bOnlySpectator = 26;
+	required bool bOutOfLives = 27;
+	required bool bBot = 28;
+	required bool bFromPreviousLevel = 29;
+	required bool bPlayerAFK = 30;
+	required int32 PlayerID = 31;
+	required ReplicatedActorReference Team = 32;
+	required int32 StartTime = 33;
+	required int32 Kills = 34;
+	required FUniqueID UniqueID = 84;
+	required int32 ExpLevel = 35;
+	required int32 ExpPointsNextLevelAt = 36;
+	required int32 ExpPointsNextLevelAtBaseValue = 37;
+	required bool bIsDead = 38;
+	required bool bHideOnHUDIfEnemy = 39;
+	required int32 GeneralSkillPoints = 40;
+	required int32 SpecialistSkillPoints = 41;
+	required float CurrentInstantHitCriticalHitBonus = 42;
+	required float CurrentInstantHitCriticalHitBonusBaseValue = 43;
+	repeated FCurrencyState Currency = 44;
+	required FResourcePoolReference HealthPool = 45;
+	required FResourcePoolReference ShieldArmor = 46;
+	required NonReplicatedObjectReference PawnAllegiance = 47;
+	required NonReplicatedObjectReference CharacterNameIdDef = 48;
+	required bool bGFxMenuOpen = 49;
+	required int32 NumTrackedSkillSlotsInUse = 50;
+	required int32 HighestCompletedPlayThrough = 51;
+	required int32 NumReplicatedNouns = 52;
+	repeated FReplicatedNounAttributeState ReplicatedNouns = 53;
+	required FReplicatedStandInGear StandInGear = 54;
+	repeated FTrackedSkillState TrackedSkills = 55;
+	required ReplicatedActorReference PoplarPSI = 56;
+	required bool bNPC = 57;
+	required bool bDigitalDelux = 58;
+	required bool bPlayBrowsingTaunt = 59;
+	required bool bIsPvEMatch = 60;
+	required bool bNeedsToCastSurrenderVote = 61;
+	required ReplicatedActorReference BotOwnerPRI = 62;
+	required int32 BotDifficulty = 63;
+	required ReplicatedActorReference MyAlertPoint = 64;
+	required FResourcePoolReference EnergyPool = 65;
+	required NonReplicatedObjectReference UnitTypeDefinition = 66;
+	required ReplicatedActorReference StatReplicationInfo = 67;
+	repeated ReplicatedActorReference NemesisPRIArray = 68;
+	repeated FManagedActorCountData ManagedActorCounts = 69;
+	required uint32 ReplicatedRespawnTimeRemaining = 70;
+	required uint32 CharacterSelectionState = 71;
+	repeated int32 ActivatedPerkFlags = 72;
+	repeated FReplicatedPerkItem Perks = 73;
+	required float OvershieldStrength = 74;
+	required float MaxOvershieldValue = 75;
+	required NonReplicatedObjectReference BrowseCharacterNameIdDef = 76;
+	required NonReplicatedObjectReference BrowseSkinIdDef = 77;
+	required NonReplicatedObjectReference SkinIdDef = 78;
+	required FAugSetInstance Augs = 79;
+	required FReplicatedBehaviorConsumerState ReplicatedBehaviorConsumerState = 80;
+	required FReplicatedBehaviorEvent ReplicatedBehaviorEvent = 81;
+	required FCinematicModeOptions ReplicatedCinematicModeOptions = 82;
+	repeated NonReplicatedObjectReference CurrentWearableDefinitions = 83;
+}
+
+message ActorReplicationMessage{
+	enum ActorType{
+		ACTOR_TYPE_ERR = 0;
+		ACTOR_TYPE_POPLAR_PLAYER_CONTROLLER = 1;
+		ACTOR_TYPE_POPLAR_PLAYER_STATE_INFO = 2;
+		ACTOR_TYPE_POPLAR_PLAYER_REPLICATION_INFO = 3;
+		ACTOR_TYPE_POPLAR_GAME_REPLICATION_INFO = 4;
+		ACTOR_TYPE_POPLAR_PLAYER_PAWN = 5;
+	}
+
+	required ActorType actorType = 1;
+	required bool isInitial = 2;
+	required uint32 actorID = 3;
+
+	required bytes replicationMessage = 4;
+}
+
+message ReplicationFrame{
+	repeated ActorReplicationMessage actorReplicationMessages = 1;
+}
